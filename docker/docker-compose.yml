@@ -1,0 +1,21 @@
+
+version: "3.9"
+services:
+  voicevox:
+    image: "voicevox/voicevox_engine:cpu-ubuntu20.04-latest"
+    ports:
+      - "50021:50021"
+    restart: unless-stopped
+    container_name: "voicevox"
+
+  nginx-proxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+    container_name: "nginx-proxy"
