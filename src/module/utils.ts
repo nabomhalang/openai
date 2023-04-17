@@ -11,12 +11,12 @@ export function removeChars(text: string, charsToRemove: string): string {
 }
 
 export function addText(response: string, textPath: string, encoding: BufferEncoding = "utf-8", mode: "a" | "w" = "a"): void {
-  switch(mode) {
+  switch (mode) {
     case "a":
       appendFileSync(textPath, `${response}\n`, { encoding: encoding });
-    break
+      break;
     case "w":
       writeFileSync(textPath, `${response}\n`, { encoding: encoding });
-    break
+      break;
   }
 }

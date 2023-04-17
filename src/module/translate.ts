@@ -1,7 +1,7 @@
 
 
 import axios, { AxiosResponse } from "axios";
-import {TranslateParams} from "../types/translate.types";
+import type { TranslateParams } from "../types/translate.types";
 
 export class TranslateAPI {
   private baseURL: string;
@@ -12,18 +12,17 @@ export class TranslateAPI {
 
   async translate(data: TranslateParams): Promise<AxiosResponse> {
     const postData = JSON.stringify(data);
-    console.log(postData);
 
     return new Promise<AxiosResponse>((resolve, reject) => {
       axios.post(`${this.baseURL}/translate`, postData, {
-       headers: {
+        headers: {
           'Content-Type': 'application/json'
         }
       }).then((response) => {
-          resolve(response.data);
-        }).catch(() => {
-          reject(0);
-        });
+        resolve(response.data.data);
+      }).catch(() => {
+        reject(0);
+      });
     });
   }
 }

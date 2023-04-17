@@ -23,10 +23,10 @@ promptMaker.getPrompt()
   .then(async (res) => {
     const response = await openai.getResponse(res);
     contextDB.add(response?.role as string, response?.content as string);
-    console.log(response?.content);
 
     const translateJP = await translater.translate({text: response?.content as string, target_lang: 'JA'});
-    console.log(translateJP.data);
+    const translateEN = await translater.translate({text: response?.content as string, target_lang: 'EN'});
+    console.log(`EN: ${translateEN}\nJP: ${translateJP}\nKR: ${response?.content}`);
 
     // await voiceVox.text2stream(46, translateJP as string);
   })

@@ -2,12 +2,12 @@
 
 import 'dotenv/config';
 import axios, { AxiosResponse } from "axios";
+import { setTimeout } from 'timers/promises';
+import { exec } from "child_process";
+import os from 'os';
 import fs from "fs";
 import qs from "querystring";
 import path from "path";
-import os from 'os';
-import { setTimeout } from 'timers/promises';
-import { exec } from "child_process";
 
 export class VoiceVoxAPI {
   private BaseURL: string;

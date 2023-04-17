@@ -2,9 +2,9 @@
 
 import { readFileSync } from "fs";
 import { join } from "path";
-import { Identify, Prompt } from "../types/prompt.types";
 import { ContextDBJson } from "./ContextDB";
 import { addText } from "./utils";
+import type { Identify, Prompt } from "../types/prompt.types";
 
 export class PromptMaker {
   contextDB: ContextDBJson;
@@ -12,7 +12,7 @@ export class PromptMaker {
   identify: Identify;
   outputNum: number;
 
-  constructor(contextDB: ContextDBJson, identifyPath: string, outputNum: number = 50) {
+  constructor(contextDB: ContextDBJson, identifyPath: string, outputNum: number = 35) {
     this.contextDB = contextDB;
     this.identifyPath = identifyPath;
     this.identify = this.getIdentify(this.identifyPath);
