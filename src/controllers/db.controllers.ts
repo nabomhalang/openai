@@ -2,14 +2,14 @@
 
 import fs from "fs";
 
-export class ContextDBJson {
+export class DBController {
   private filename: string;
 
   constructor(filename: string) {
     this.filename = filename;
 
-    if(!fs.existsSync(this.filename)) {
-      fs.writeFileSync(this.filename, JSON.stringify({history: []}), {
+    if (!fs.existsSync(this.filename)) {
+      fs.writeFileSync(this.filename, JSON.stringify({ history: [] }), {
         encoding: "utf-8"
       });
       console.log("init contextDB", this.filename);
@@ -17,7 +17,7 @@ export class ContextDBJson {
 
     if (fs.statSync(filename).size === 14) {
       console.log(`file is empty. ${filename}`);
-      fs.writeFileSync(this.filename, JSON.stringify({history: []}), {
+      fs.writeFileSync(this.filename, JSON.stringify({ history: [] }), {
         encoding: "utf-8"
       });
       console.log("init contextDB", this.filename);
@@ -29,7 +29,7 @@ export class ContextDBJson {
 
     const data = JSON.parse(fs.readFileSync(this.filename, { encoding: 'utf-8' })).history;
     data.push({ role: role, content: content });
-    fs.writeFileSync(this.filename, JSON.stringify({history: data}, null, "\t"), { encoding: 'utf-8' });
+    fs.writeFileSync(this.filename, JSON.stringify({ history: data }, null, "\t"), { encoding: 'utf-8' });
   }
 
   get(): any[] {
@@ -37,6 +37,6 @@ export class ContextDBJson {
   }
 
   init(): void {
-    fs.writeFileSync(this.filename, JSON.stringify({history: []}), { encoding: "utf-8" });
+    fs.writeFileSync(this.filename, JSON.stringify({ history: [] }), { encoding: "utf-8" });
   }
 }

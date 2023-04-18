@@ -1,6 +1,7 @@
 
 
 import "dotenv/config";
+import fs from "fs";
 import { OpenAIApi, Configuration } from "openai";
 
 
@@ -56,5 +57,12 @@ export class OpenAI {
     }
 
     return response?.data.choices[0].text?.trim();
+  }
+
+  async recognize(audio_file: string, { model = "whisper-1", prompt = undefined as string | undefined } = {}): Promise<string> {
+    const file = fs.createReadStream(audio_file);
+
+    const translated = await this.openai.createTranscription(file, model, prompt);
+    return translated.data.text;
   }
 }

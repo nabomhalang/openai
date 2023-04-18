@@ -1,16 +1,18 @@
 
-import { ContextDBJson } from './src/module/ContextDB';
+import { DBController } from './src/controllers/db.controllers';
 import { VoiceVoxAPI } from './src/module/TTSaudio';
-import { OpenAI } from './src/module/openai';
+import { OpenAI } from './src/controllers/openai.controllers';
 import { PromptMaker } from './src/module/prompt';
 import { TranslateAPI } from './src/module/translate';
 
 const args = process.argv.splice(2);
 
+if (args[0] === "" || args[0] === undefined) process.exit(1);
+
 const characterName = "reiko";
 
 // TODO: mysql로 변경하기
-const contextDB = new ContextDBJson(`./src/character/${characterName}/conversation.json`);
+const contextDB = new DBController(`./src/character/${characterName}/conversation.json`);
 contextDB.add("user", args[0]);
 
 const promptMaker = new PromptMaker(contextDB, `./src/character/${characterName}/identify.txt`);
@@ -24,8 +26,8 @@ promptMaker.getPrompt()
     const response = await openai.getResponse(res);
     contextDB.add(response?.role as string, response?.content as string);
 
-    const translateJP = await translater.translate({text: response?.content as string, target_lang: 'JA'});
-    const translateEN = await translater.translate({text: response?.content as string, target_lang: 'EN'});
+    const translateJP = await translater.translate({ text: response?.content as string, target_lang: 'JA' });
+    const translateEN = await translater.translate({ text: response?.content as string, target_lang: 'EN' });
     console.log(`EN: ${translateEN}\nJP: ${translateJP}\nKR: ${response?.content}`);
 
     // await voiceVox.text2stream(46, translateJP as string);
