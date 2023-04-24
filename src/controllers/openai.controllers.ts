@@ -2,24 +2,26 @@
 
 import "dotenv/config";
 import fs from "fs";
-import { OpenAIApi, Configuration } from "openai";
+import { OpenAIApi, Configuration, ChatCompletionResponseMessage } from "openai";
 
 
 export class OpenAI {
   openai: OpenAIApi;
+  model: string;
 
-  constructor(apikey: string) {
+  constructor(apikey: string, model: string) {
     this.openai = new OpenAIApi(new Configuration({ apiKey: apikey }));
+    this.model = model;
   }
 
-  async getResponse(context: any) {
+  async getResponse(context: any): Promise<ChatCompletionResponseMessage> {
     // console.log(context);
 
     var response;
     for (var i = 0; i < 20; i++) {
       try {
         response = await this.openai.createChatCompletion({
-          model: "gpt-3.5-turbo-0301",
+          model: this.model,
           messages: context
         });
         break;
@@ -31,7 +33,7 @@ export class OpenAI {
 
     const responseMessage = response?.data.choices[0].message;
 
-    return responseMessage;
+    return responseMessage as ChatCompletionResponseMessage;
   }
 
   async translate(text: string, targetLanguage: string): Promise<string | undefined> {

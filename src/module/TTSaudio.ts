@@ -37,12 +37,10 @@ export class VoiceVoxAPI {
     console.log('VoiceVox TTS 완료: test.wav 파일 생성');
   }
 
-  async makeWaveFile(speaker: number, text: string, saveFilePath: string, start: number = Date.now()): Promise<void> {
+  async makeWaveFile(speaker: number, text: string, saveFilePath: string): Promise<void> {
     const query = await this.sendAudioQuery(speaker, text);
-    console.log((Date.now() - start) / 1000);
     const synthesisRes = await this.synthesis(speaker, query);
     this.synthesis2waveFile(synthesisRes, saveFilePath);
-    console.log((Date.now() - start) / 1000);
   }
 
   async playWaveFile(filePath: string): Promise<void> {
@@ -60,9 +58,10 @@ export class VoiceVoxAPI {
   }
 
   async text2stream(
+    characterName: string,
     speaker: number,
     text: string,
-    saveFilePath = path.join(__dirname, "../character/reiko/test.wav")
+    saveFilePath = path.join(__dirname, `../character/${characterName}/test.wav`)
   ): Promise<void> {
     await this.makeWaveFile(speaker, text, saveFilePath);
     await this.playWaveFile(saveFilePath);
